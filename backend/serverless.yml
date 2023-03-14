@@ -1,7 +1,8 @@
 # TODO: Change the name of the org 
-org: sudkul
-app: serverless-todo-app
-service: serverless-todo-app
+org: seinkou
+app: serverless-app-4
+service: serverless-app-4
+frameworkVersion: '3.28.1'
 
 plugins:
   - serverless-webpack
@@ -11,7 +12,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  lambdaHashingVersion: '20201221'
+  #lambdaHashingVersion: '20201221'
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
@@ -23,10 +24,12 @@ provider:
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
-    TODOS_TABLE: Todos-${self:provider.stage}
+    TODOS_TABLE: Serverless-app-4-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: serverless-app-c4-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    PROJECT_NAME: serverless-app-4
+    INDEX_NAME: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
 
   logs:
     # Enable API Gateway logs
@@ -47,8 +50,10 @@ functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
+
   # TODO: Configure this function - 
   # Provide iamRoleStatements property for performing Actions on DynamoDB
+
   GetTodos:
     handler: src/lambda/http/getTodos.handler
     events:
@@ -57,6 +62,7 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+
 
   # TODO: Configure this function - 
   # Provide iamRoleStatements property. Decide the Actions and AWS Resource. 

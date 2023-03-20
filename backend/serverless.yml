@@ -173,6 +173,8 @@ resources:
             AttributeType: S
           - AttributeName: todoId
             AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
@@ -184,7 +186,7 @@ resources:
           - IndexName: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
             KeySchema:
               - AttributeName: userId
-                KeyTyoe: HASH
+                KeyType: HASH
               - AttributeName: createdAt
                 KeyType: RANGE
             Projection:

@@ -9,9 +9,15 @@ import * as uuid from 'uuid'
 
 // TODO: Implement businessLogic
 
-const logger = createLogger('todosAcess')
+const logger = createLogger('todosAccess')
 const attachmentUtils = new AttachmentUtils()
 const todosAccess = new TodosAccess()
+
+// get Todo function
+export async function getTodosForUser(userId: string): Promise<TodoItem[]>{
+    logger.info('Get todo function')
+    return todosAccess.getAllTodos(userId)    
+}
 
 // Create TODO function
 export async function createTodo(
@@ -32,3 +38,5 @@ export async function createTodo(
     }
     return await todosAccess.createTodoItem(newItem)
 }
+
+

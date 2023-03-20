@@ -11,7 +11,7 @@ import * as createError from 'http-errors'
 
 const logger = createLogger('todosAcess')
 const attachmentUtils = new AttachmentUtils()
-const todosAcess = new TodosAccess()
+const todosAccess = new TodosAccess()
 
 // Create TODO function
 export async function createTodo(
@@ -27,7 +27,7 @@ export async function createTodo(
         todoId,
         createdAt,
         done: false,
-        s3AttachmentUrl,
+        attachmentUrl: s3AttachmentUrl,
         ...newTodo
     }
     return await todosAccess.createTodoItem(newItem)

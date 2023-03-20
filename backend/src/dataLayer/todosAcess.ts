@@ -1,11 +1,11 @@
 import * as AWS from 'aws-sdk'
-import * as AWSXRay from 'aws-xray-sdk'
+//import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { createLogger } from '../utils/logger'
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate';
-import { promises } from 'fs'
-
+//import { promises } from 'fs'
+var AWSXRay = require('aws-xray-sdk')
 const XAWS = AWSXRay.captureAWS(AWS)
 
 const logger = createLogger('TodosAccess')
@@ -76,6 +76,43 @@ export class TodosAccess {
                 .promise()
         const attributes = result.Attributes
         return attributes as TodoUpdate
+    }
+
+    async deleteTodoItem(todoId: string, userId: string): Promise<string> {
+        logger.info("Deleting todo");
+
+        const params = {
+            TableName: this.todosTable,
+            Key: {
+                "userId": userId,
+                "todoId": todoId
+            },
+        };
+
+        const result = await this.docClient.delete(params).promise();
+        logger.info("todo Item delete",result)
+
+        return "" as string;
+    }
+
+    async updateTodoAttachmentUrl(
+        todoId: string,
+        userId: string,
+        attachmentUrl: string
+    ): Promise<void> {
+        logger.info("Update todo attachment URL")
+        await this.docClient
+        .update({
+            TableName: this.todosTable,
+            Key: {
+                todoId,
+                userId
+            },
+            UpdateExpression: 'set attachmentUrl = :attachmentUrl',
+            ExpressionAttributeValues: {
+                ':attachmentUrl': attachmentUrl
+            }
+        }).promise()
     }
 
 }

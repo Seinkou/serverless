@@ -10,6 +10,8 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
 
 provider:
   name: aws
@@ -46,6 +48,17 @@ provider:
             - xray:PutTraceSegments
           Resource: "*"
 
+custom:
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: serverless-api
+        description: serverless-api
+    models:
+      - name: CreateTodoRequest
+        contentType: "application/json"
+        schema: ${file(models/create-todo-model.json)}
 
 functions:
 
@@ -77,10 +90,10 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-    #  - Effect: Allow
-    #    Action:
-    #      - dynamodb:Query
-    #    Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_CREATED_AT_INDEX}
       - Effect: Allow
         Action:
           - xray:PutTraceSegments
@@ -99,7 +112,13 @@ functions:
           method: post
           path: todos
           cors: true
-#          authorizer: Auth
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: create a new todo 
+            description: create a todo Item
+            requestModels:
+              'application/json': CreateTodoRequest
 #          request:
 #            schemas:
 #              application/json: ${file(models/create-todo-model.json)}
@@ -228,6 +247,15 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 300
+
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
 
     # TODO: Complete the policy below and attach it to the bucket defined above
     # For cross referencing the name of the bucket, use "!Ref AttachmentsBucket"

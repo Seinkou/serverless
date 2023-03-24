@@ -58,3 +58,12 @@ export async function deleteTodo(
     logger.info('Delete todo function')
     return todosAccess.deleteTodoItem(todoId, userId)
 }
+
+// create attachement function
+export async function createAttachmentPresignedUrl(
+    todoId: string,
+    userId: string
+): Promise<string>{
+    logger.info('create attachment function', userId, todoId)
+    return attachmentUtils.getUploadUrl(todoId)
+}

@@ -48,7 +48,6 @@ provider:
         - Effect: Allow
           Action:
             - xray:PutTelemetryRecords
-            - xray:PutTraceSegments
           Resource: "*"
 
 custom:

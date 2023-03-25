@@ -75,6 +75,7 @@ export class TodosAccess {
                 })
                 .promise()
         const attributes = result.Attributes
+        logger.info('Todo Item updated', attributes)
         return attributes as TodoUpdate
     }
 

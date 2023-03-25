@@ -85,15 +85,15 @@ export class TodosAccess {
         const params = {
             TableName: this.todosTable,
             Key: {
-                "userId": userId,
-                "todoId": todoId
+                "todoId": todoId,
+                "userId": userId
             },
         };
 
         const result = await this.docClient.delete(params).promise();
         logger.info("todo Item delete",result)
 
-        return "" as string;
+        return todoId as string;
     }
 
     async updateTodoAttachmentUrl(

@@ -149,12 +149,12 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
           documentation:
             summary: "Update a todo item"
             description: "Update a todo item"
             requestModels:
               "application/json": UpdateTodoRequest
-          reqValidatorName: RequestBodyValidator
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-update-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -247,6 +247,14 @@ resources:
         RestApiId:
           Ref: ApiGatewayRestApi 
     
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
     # TODO: Create a DynamoDB table with local secondary index and a composite key
  
 ####TodosTable:
@@ -278,7 +286,6 @@ resources:
             Projection:
               ProjectionType: ALL
 
-
     # TODO: Complete the bucket properties below. 
     # Do not forget to add the CorsConfiguration propoerty
  
@@ -299,15 +306,6 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 300
-
-    RequestBodyValidator:
-      Type: AWS::ApiGateway::RequestValidator
-      Properties:
-        Name: 'request-body-validator'
-        RestApiId:
-          Ref: ApiGatewayRestApi
-        ValidateRequestBody: true
-        ValidateRequestParameters: false
 
     # TODO: Complete the policy below and attach it to the bucket defined above
     # For cross referencing the name of the bucket, use "!Ref AttachmentsBucket"

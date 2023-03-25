@@ -57,19 +57,19 @@ export class TodosAccess {
                 {
                     TableName: this.todosTable,
                     Key: {
-                        "userId": userId,
-                        "todoId": todoId
+                        "todoId": todoId,
+                        "userId": userId
                     },
-                    UpdateExpression: "set #a = :a, #b = :b, #c = :c",
-                    ExpressionAttributeNames: {
-                        "#a": "name",
-                        "#b": "dueDate",
-                        "#c": "done"
-                    },
+                    UpdateExpression: "set #name = :name, #dueDate = :dueDate, #done = :done",
                     ExpressionAttributeValues: {
-                        ":a": todoUpdate['name'],
-                        ":b": todoUpdate['dueDate'],
-                        ":c": todoUpdate['done']
+                        ":name": todoUpdate['name'],
+                        ":dueDate": todoUpdate['dueDate'],
+                        ":done": todoUpdate['done']
+                    },
+                    ExpressionAttributeNames: {
+                        "#name": "name",
+                        "#dueDate": "dueDate",
+                        "#done": "done"
                     },
                     ReturnValues: "ALL_NEW"
                 })

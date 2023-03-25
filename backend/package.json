@@ -21,6 +21,7 @@
     "aws-sdk": "^2.1338.0",
     "serverless-aws-documentation": "^1.1.0",
     "serverless-iam-roles-per-function": "^3.2.0",
+<<<<<<< HEAD
     "serverless-plugin-canary-deployments": "^0.4.8",
     "serverless-plugin-tracing": "^2.0.0",
     "serverless-reqvalidator-plugin": "^1.0.4",
@@ -28,6 +29,15 @@
     "ts-loader": "^5.4.5",
     "typescript": "^5.0.2",
     "webpack": "^5.76.2"
+=======
+    "serverless-plugin-canary-deployments": "^0.4.7",
+    "serverless-plugin-tracing": "^2.0.0",
+    "serverless-reqvalidator-plugin": "^1.0.4",
+    "serverless-webpack": "^5.11.0",
+    "ts-loader": "^5.3.3",
+    "typescript": "^5.0.2",
+    "webpack": "^4.29.6"
+>>>>>>> dev
   },
   "author": "Ivan Mushketyk",
   "license": "MIT"

@@ -55,7 +55,11 @@ export const handler = async (
 }
 
 async function verifyToken(authHeader: string): Promise<JwtPayload> {
+<<<<<<< HEAD
   logger.info('Check Token', authHeader.substring(0, 20))
+=======
+  logger.info('Verifying',authHeader.substring(0, 20))
+>>>>>>> dev
   const token = getToken(authHeader)
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
 
@@ -72,11 +76,17 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   //get pem
   const pemData = signingKeys.x5c[0]
   //convert pem to certificat
+<<<<<<< HEAD
   const cert = `-----BEGIN CERTIFICATE-----\n${pemData}\n-----END CERTIFICAT-----`
   const verifiedToken = verify(token, cert {algorithms: ['RS256']}) as JwtPayload
+=======
+  const cert = `-----BEGIN CERTIFICATE-----\n${pemData}\n-----END CERTIFICATE-----`
+  const verifiedToken = verify(token, cert, {algorithms: ['RS256']}) as JwtPayload
+>>>>>>> dev
   logger.info('verifiedToken', verifiedToken)
   return verifiedToken
 }
+
 
 function getToken(authHeader: string): string {
   if (!authHeader) throw new Error('No authentication header')
